@@ -6,23 +6,34 @@ def calculate_split(bill, assignments):
 
     for item in bill.items:
 
-        people = assignments.get(item.name, [])
+        people = assignments.get(item.name)
 
         if not people:
             continue
 
-        share = item.price / len(people)
+        total_portions = sum(people.values())
 
-        for person in people:
-            amounts[person] = amounts.get(person, 0) + share
+        if total_portions <= 0:
+            continue
+
+        for person, portion in people.items():
+
+            share = (
+                portion / total_portions
+            ) * item.price
+
+            amounts[person] = (
+                amounts.get(person, 0)
+                + share
+            )
 
 
     # STEP 2: Calculate subtotal
 
     subtotal = sum(amounts.values())
 
-    if subtotal == 0:
-        return amounts
+    if subtotal <= 0:
+        return {}
 
 
     # STEP 3: Additional charges

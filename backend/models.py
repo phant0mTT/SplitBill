@@ -20,5 +20,6 @@ class Bill(BaseModel):
 
 class SplitRequest(BaseModel):
     bill: Bill
-    people: List[str]
-    assignments: dict[str, List[str]]
+    #people: List[str]
+    assignments: dict[str, dict[str, float]]
+    #assignments: dict[str, List[str]]
