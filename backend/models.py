@@ -1,12 +1,28 @@
-from pydantic import BaseModel,Field
-from typing import List, Optional
+from typing import Dict, List, Optional
+
+from pydantic import BaseModel, Field
 
 
 class BillItem(BaseModel):
+    id: Optional[int] = None
+
     name: str
-    quantity: float = Field(gt=0)
-    price: float = Field(ge=0)
-    confidence: float = Field(ge=0, le=1)
+
+    quantity: float = Field(
+        ge=0,
+        description="Quantity printed on the bill."
+    )
+
+    price: float = Field(
+        ge=0,
+        description="Pre-tax price for this line item."
+    )
+
+    confidence: float = Field(
+        ge=0,
+        le=1,
+        description="Confidence that the extracted item information is correct."
+    )
 
 
 class Bill(BaseModel):
@@ -16,12 +32,9 @@ class Bill(BaseModel):
     tax: float = Field(ge=0)
     service_charge: float = Field(ge=0)
     discount: float = Field(ge=0)
-
     total: float = Field(ge=0)
 
 
 class SplitRequest(BaseModel):
     bill: Bill
-    #people: List[str]
-    assignments: dict[str, dict[str, float]]
-    #assignments: dict[str, List[str]]
+    assignments: Dict[int, Dict[str, float]]

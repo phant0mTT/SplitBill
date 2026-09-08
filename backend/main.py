@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from models import SplitRequest
 from services.calc import calculate_split
-
+from services.bill_ext import extract_bill
 
 app = FastAPI(
     title="Split Bill AI"
@@ -25,32 +25,48 @@ def root():
     }
 
 @app.post("/extract-bill")
-async def extract_bill(file: UploadFile = File(...)):
-
-    image_data = await file.read()
-
-    return {
-        "filename": file.filename,
-        "size": len(image_data)
-    }
-
-@app.post("/calculate-split")
-def calculate(request: SplitRequest):
+async def extract_bill_endpoint(
+    file: UploadFile = File(...)
+):
 
     try:
 
-        breakdown = calculate_split(
+        image_bytes = await file.read()
+
+        bill = await extract_bill(
+            image_bytes,
+            file.content_type
+        )
+
+        return {
+            "success": True,
+            "bill": bill.model_dump()
+        }
+
+    except Exception as error:
+
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "error": str(error)
+            }
+        )
+
+@app.post("/calculate-split")
+def calculate(request: SplitRequest):
+    try:
+        result = calculate_split(
             request.bill,
             request.assignments
         )
 
         return {
             "success": True,
-            "breakdown": breakdown
+            "result": result
         }
 
     except ValueError as error:
-
         return JSONResponse(
             status_code=400,
             content={

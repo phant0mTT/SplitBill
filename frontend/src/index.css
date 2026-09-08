@@ -140,3 +140,38 @@ button {
 .result-row:last-child {
   border-bottom: none;
 }
+
+.assignment {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.assignment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.assignment-header h3 {
+  margin: 0;
+}
+
+.portion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.portion-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.portion-row input {
+  width: 70px;
+  padding: 6px;
+}
