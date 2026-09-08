@@ -175,3 +175,9 @@ button {
   width: 70px;
   padding: 6px;
 }
+
+.warning-text {
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: bold;
+}

@@ -258,9 +258,13 @@ function App() {
                     </td>
 
                     <td>
-                      {Math.round(
-                        item.confidence * 100
-                      )}%
+                      {Math.round(item.confidence * 100)}%
+
+                      {item.confidence < 0.8 && (
+                        <span className="warning-text">
+                          Review
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))}
