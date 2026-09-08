@@ -1,21 +1,23 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from typing import List, Optional
 
 
 class BillItem(BaseModel):
     name: str
-    quantity: float
-    price: float
-    confidence: float = 1.0
+    quantity: float = Field(gt=0)
+    price: float = Field(ge=0)
+    confidence: float = Field(ge=0, le=1)
 
 
 class Bill(BaseModel):
     items: List[BillItem]
-    subtotal: Optional[float] = None
-    tax: Optional[float] = None
-    service_charge: Optional[float] = None
-    discount: Optional[float] = None
-    total: float
+
+    subtotal: float = Field(ge=0)
+    tax: float = Field(ge=0)
+    service_charge: float = Field(ge=0)
+    discount: float = Field(ge=0)
+
+    total: float = Field(ge=0)
 
 
 class SplitRequest(BaseModel):
